@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name"> DriversApp</string>
+    <string name="version"> Версия</string>
+    <string name="numV" translatable="false"> 1.4.0 - beta</string>
+    <string name="goToMapReadOnly">Просмотр маршрута</string>
+    <string name="inPut">Войти</string>
+    <string name="loginWindow">
+        Здравствуйте.  \n
+        Для начала работы нажмите на кнопку и наведите камеру на штрих-код.
+    </string>
+    <string name="back">Назад</string>
+    <string name="getInfo">Получаю информацию. Ожидайте…</string>
+    <string name="cashCollection">Инкассация</string>
+
+    <string name="yep">Да</string>
+    <string name="no">Нет</string>
+    <string name="goHome" translatable="false">На базу</string>
+
+    <string name="confirm" translatable="false">Нажатием кнопки &quot;Да&quot; вы подтверждаете завершение доставки товара</string>
+
+    <string name="notify" translatable="false">Выберите нужное действие с клиенто</string>
+    <string name="broadcast_id" translatable="false">com.consta7.driversapp.NotifyReceiver</string>
+    <string name="addKl"> Адрес клиента</string>
+    <string name="contLk"> Контактное лицо</string>
+    <string name="contNum"> Контактный номер *</string>
+    <string name="contMNum"> Номер менеджера</string>
+    <string name="notesCl"> Примечание</string>
+    
+    <string name="notation">* - для того чтобы позвонить клиенту, нажмите на его номер телефона</string>
+    <string name="goToMap">В путь</string>
+
+
+    <!--//////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <string name="permission_rationale" translatable="false">All the time location permission required for core functionality</string>
+    <string name="permission_denied_explanation" translatable="false">All the time location permission denied; needed for core
+        functionality.</string>
+    <string name="settings" translatable="false">Settings</string>
+    <string name="ok" translatable="false">OK</string>
+
+    <string name="request_updates" translatable="false">Request updates</string>
+    <string name="remove_updates" translatable="false">Remove updates</string>
+    <string name="unknown_location" translatable="false">Unknown location</string>
+
+    <string name="batched_location_updates" translatable="false">Batched location updates</string>
+
+    <plurals name="num_locations_reported">
+        <item quantity="zero">No location reported</item>
+        <item quantity="one">One location reported</item>
+        <item quantity="other">%d locations reported</item>
+    </plurals>
+</resources>

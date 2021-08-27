@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DriversApp</string>
+    <string name="goToMapReadOnly">Viewing a route</string>
+    <string name="inPut">Sign in</string>
+    <string name="loginWindow">Good time of day. To get started, click on the button and point the camera at the barcode.</string>
+    <string name="back">Back</string>
+    <string name="addKl">Client\'s address</string>
+    <string name="contLk">Contact person</string>
+    <string name="contNum">Contact number</string>
+    <string name="contMNum">Manager\'s number</string>
+    <string name="goToMap">Let\'s go</string>
+    <string name="version">Version</string>
+    <string name="notation">* - to call a customer, click on their phone number</string>
+    <string name="getInfo">Getting information, wait…</string>
+    <string name="notesCl">Note</string>
+    <string name="cashCollection">Cash Collection</string>
+    <string name="yep">Yes</string>
+    <string name="no">No</string>
+</resources>

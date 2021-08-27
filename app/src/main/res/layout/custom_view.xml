@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/customInfo"
+    android:background="@drawable/custom_design"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/hat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/numberApplication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:textColor="@color/colorAccent"
+            android:id="@+id/cashCollect"
+            android:text="@string/cashCollection"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/pko"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="end"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/middle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hat"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:layout_marginTop="0dp">
+
+        <ListView
+            android:id="@+id/clientInfo"
+            android:textColor="#000"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="140dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/foot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/middle"
+        android:layout_marginTop="0dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingBottom="10dp"
+        tools:ignore="UselessParent">
+
+        <Button
+            android:id="@+id/btnDialog"
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dev_btn"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp" />
+
+        <ImageView
+            android:id="@+id/noteFlag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/warning"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:textStyle="bold"
+            tools:ignore="ContentDescription" />
+
+        <Button
+            android:id="@+id/btnChoose"
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dev_btn"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/foot"
+        android:layout_marginTop="0dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingBottom="10dp">
+
+        <Button
+            android:id="@+id/btnSuccess"
+            android:textColor="#fff"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dev_btn"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
