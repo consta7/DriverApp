@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 
 interface Login {
-
     fun checkPermission(context: Context, activity: Activity)
     fun onRequestPermissionsResult(
         requestCode: Int,
@@ -12,5 +11,4 @@ interface Login {
         grantResults: IntArray,
         activity: Activity
     )
-
 }

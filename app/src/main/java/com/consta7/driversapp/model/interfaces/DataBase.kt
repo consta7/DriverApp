@@ -1,4 +1,4 @@
-package com.consta7.driversapp.model
+package com.consta7.driversapp.model.interfaces
 
 import org.json.JSONArray
 
@@ -6,9 +6,9 @@ interface DataBase {
     /** DataBase.kt
      * This class need for get information about task for driver!
      * */
-    //request for company API to get data driver task
+    //request for API to get data driver task
     fun requestBarcode(barcode: String) : Int
-    //request for company API to sent info about driver
+    //request for API to sent info about driver
     fun requestData(file : String)
     //get json object "data" for next usage
     fun getJSON() : JSONArray?

@@ -7,13 +7,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
 abstract class Global: AppCompatActivity() {
 
-    val contextApp : Context
-        get() = this
     val tag : String = "project_by_const7"
     private val sdkVersion = Build.VERSION.SDK_INT
     private val actionBarcodeData = "com.honeywell.sample.action.BARCODE_DATA"
@@ -63,40 +60,5 @@ abstract class Global: AppCompatActivity() {
                 .putExtra(extraProfile, "DEFAULT")
                 .putExtra(extraProperties, properties)
         )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        onWindowFocusChanged(true)
-        Log.d(tag, "onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        onWindowFocusChanged(true)
-        Log.d(tag, "onPause")
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        onWindowFocusChanged(true)
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        onWindowFocusChanged(true)
-        super.onRestoreInstanceState(savedInstanceState)
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) hideSystemUI()
-    }
-
-    private fun hideSystemUI() {
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_IMMERSIVE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN
-                )
     }
 }

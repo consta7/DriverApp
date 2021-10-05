@@ -47,7 +47,7 @@
         <activity android:name=".view.FullRoute"/>
         <activity android:name=".view.ScanActivity"/>
 
-        <receiver android:name=".LocationUpdatesBroadcastReceiver"/>
+        <receiver android:name=".foreground.LocationUpdatesBroadcastReceiver"/>
     </application>
 
 

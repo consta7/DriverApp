@@ -1,4 +1,4 @@
-package com.consta7.driversapp
+package com.consta7.driversapp.foreground
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -18,7 +18,7 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver() {
                 val result = LocationResult.extractResult(intent)
                 val locations = result.locations
                 Utils.setLocationUpdatesResult(context, locations)
-                listFile.onSuccessCreateFile(context, 1)
+                listFile.onSuccessCreateFile(1)
                 Log.i(TAG, Utils.getLocationUpdatesResult(context)!!)
             } catch (e : Exception) {
                 Log.i("broadcast error", "Can't get location or fatal error in library")

@@ -2,7 +2,6 @@ package com.consta7.driversapp.view
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -12,30 +11,36 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.RequiresApi
+import com.consta7.driversapp.Global
+import com.consta7.driversapp.R
+import com.consta7.driversapp.foreground.LocationUpdatesBroadcastReceiver
+import com.consta7.driversapp.foreground.Utils
+import com.consta7.driversapp.presenter.DisplayPresenter
+import com.consta7.driversapp.presenter.ListPresenter
+import com.consta7.driversapp.view.interfaces.ListViewInfo
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.consta7.driversapp.Global
-import com.consta7.driversapp.LocationUpdatesBroadcastReceiver
-import com.consta7.driversapp.R
-import com.consta7.driversapp.Utils
-import com.consta7.driversapp.presenter.ListPresenter
-import com.consta7.driversapp.view.interfaces.ListViewAbstract
 import kotlinx.android.synthetic.main.activity_main_list.*
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
 import java.lang.Thread.sleep
-import java.util.*
 
-class ListViewImp : Global(), ListViewAbstract {
+class ListViewImp : Global(), ListViewInfo {
+
     var barcode = LoginViewImp.barcode.toString()
     private var list : ListPresenter = ListPresenter()
-    private lateinit var backIntent : PendingIntent
-    private var currentTime = Date().time
+    private var display : DisplayPresenter = DisplayPresenter()
 
+    private lateinit var backIntent : PendingIntent
     private lateinit var locationRequest: LocationRequest
     private var fusedLocationClient : FusedLocationProviderClient? = null
+
+    private val pendingIntent: PendingIntent
+        @SuppressLint("UnspecifiedImmutableFlag")
+        get() {
+            val intent = Intent(this, LocationUpdatesBroadcastReceiver::class.java)
+            intent.action = LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES
+            return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
 
     @SuppressLint("UnspecifiedImmutableFlag")
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -49,8 +54,8 @@ class ListViewImp : Global(), ListViewAbstract {
         backIntent = PendingIntent.getActivity(this, 0, intentSt, 0)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        createLocationRequest()
-        removeLocationUpdates()
+        createLocationRequest()   //create request with params
+        removeLocationUpdates()   //updates is null-object, create empty string
 
         btnMapReadOnly.setOnClickListener {
             val readOnly = Intent(this, FullRoute::class.java)
@@ -58,10 +63,10 @@ class ListViewImp : Global(), ListViewAbstract {
         }   //check full route
         btnMap.setOnClickListener {
             requestLocationUpdates()
-            onSuccessCreateFile(this,1)
-            list.pushNotify(this, backIntent)
-            list.selectedDoneClient(this, 0, list.getIndex())
-            list.showTable(this, table, layoutInflater)
+            onSuccessCreateFile(1)
+            display.pushNotify(this, backIntent)
+            display.selectedDoneClient(this, 0, list.getIndex())
+            display.showTable(this, table, layoutInflater)
         }   //open maps
 
         successResult()
@@ -73,21 +78,19 @@ class ListViewImp : Global(), ListViewAbstract {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-       // onClickLayout()
-       // if (list.confirmResult(0, true)) {
-        writeInFile(this, list.getNumberTask(), currentTime.toString(), 1)
+        list.transferValues(this, 2)
         requestLocationUpdates()
-        list.showMapSelector(this, -1)
-        list.pushNotify(this, backIntent)
-      //  } else Toast.makeText(this, "Ошибка получения разрешения!", Toast.LENGTH_SHORT).show()
+        display.showMapSelector(this, -1)
+        display.pushNotify(this, backIntent)
         return super.onOptionsItemSelected(item)
     }
 
     private fun successResult() {
         list.listPresenter(this)
+        display.displayPresenter(this)
         list.progressBarVisible(View.VISIBLE)
         list.informationVisible(View.INVISIBLE)
-        list.successResult(code = 1, barcode)
+        list.successResult(code = 1, barcode, this)
     }
 
     override fun openMaps(map : String, uri : String) {
@@ -118,16 +121,17 @@ class ListViewImp : Global(), ListViewAbstract {
     override fun onSuccessResult(result : Int, code : Int) {
         when(result) {
             1 -> list.successParse(1)
-            else -> list.successResult(1, barcode)
+            else -> list.successResult(1, barcode, this)
         }
     }
 
     override fun onSuccessParse(result: Int, code: Int) {
         if (result == 1) {
-            list.showTable(this, table, layoutInflater)
+            display.showTable(this, table, layoutInflater)
             list.progressBarVisible(View.INVISIBLE)
             list.informationVisible(View.VISIBLE)
-            title = list.getDriverName()
+            title = display.getDriverName()
+            requestLocationUpdates()
         }
         else list.successParse(1)
     }
@@ -139,17 +143,8 @@ class ListViewImp : Global(), ListViewAbstract {
         return num
     }
 
-    override fun onClickLayout() {
-        //TODO:("Not yet implemented")
-     //   supportFragmentManager.beginTransaction().add(R.id.frame, list.openFragment()).commit()
-    }
-
-    override fun onSuccessCreateFile(context: Context, result: Int) {
-        if (result == 1) {
-            list.createJsonFile()
-            Log.w("consta7///", "successCreate")
-            writeInFile(context, list.getNumberTask(), currentTime.toString(), 0)
-        }
+    override fun onSuccessCreateFile(result: Int) {
+        if (result == 1) list.transferValues(this, 0)
         else sleep(1 * 1000L)
     }
 
@@ -168,14 +163,6 @@ class ListViewImp : Global(), ListViewAbstract {
         locationRequest.maxWaitTime = MAX_WAIT_TIME
     }
 
-    private val pendingIntent: PendingIntent
-        @SuppressLint("UnspecifiedImmutableFlag")
-        get() {
-            val intent = Intent(this, LocationUpdatesBroadcastReceiver::class.java)
-            intent.action = LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES
-            return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        }
-
     private fun requestLocationUpdates() {
         try {
             Log.i(tag, "Starting location updates")
@@ -193,69 +180,10 @@ class ListViewImp : Global(), ListViewAbstract {
         fusedLocationClient!!.removeLocationUpdates(pendingIntent)
     }
 
-    override fun writeInFile(context: Context, number : String, dateTime : String, flag : Int) {
-        val fileName : String
-        var docID = number
-        if (number.isEmpty()) docID = phoneID.toString()
-        fileName = when (flag) {
-            0 -> "${geoLatBackground}-${geoLonBackground}_#${docID}_${dateTime}"
-            1 -> "logRouteInfo_#${docID}_${dateTime}"
-            else -> "intermediateLog_#${docID}_${dateTime}"
-        }
-        when (flag) {
-            0 -> {
-                val json = ListPresenter.report
-                try {
-                    val fileOutput : FileOutputStream = context.openFileOutput(
-                        "$fileName.txt"
-                        , MODE_PRIVATE)
-                    fileOutput.write(json.toByteArray())
-                    fileOutput.close()
-                    list.successWrite(fileName)
-                } catch (e : FileNotFoundException) { e.printStackTrace() }
-                catch (e : IOException) { e.printStackTrace() }
-            }
-            1 -> {
-                val logs = ListPresenter.logReport
-                try {
-                    val fileOutput : FileOutputStream = context.openFileOutput(
-                        "$fileName.txt"
-                        , MODE_PRIVATE)
-                    fileOutput.write(logs.toByteArray())
-                    fileOutput.close()
-                    list.successWrite(fileName)
-                } catch (e : FileNotFoundException) { e.printStackTrace() }
-                catch (e : IOException) { e.printStackTrace() }
-            }
-            else -> {
-                val logInterim = ListPresenter.interimLog
-                try {
-                    val fileOutput : FileOutputStream = context.openFileOutput(
-                        "$fileName.txt"
-                        , MODE_PRIVATE)
-                    fileOutput.write(logInterim.toByteArray())
-                    fileOutput.close()
-                    list.successWrite(fileName)
-                } catch (e : FileNotFoundException) { e.printStackTrace() }
-                catch (e : IOException) { e.printStackTrace() }
-            }
-        }
-    }
-
-    fun setGeoLat(newLat : Double) {
-        geoLatBackground = newLat
-    }
-
-    fun setGeoLon(newLon : Double) {
-        geoLonBackground = newLon
-    }
-
     companion object {
-        private var geoLatBackground : Double = 0.0
-        private var geoLonBackground : Double = 0.0
         private var phoneID : Int = 0
-        private const val UPDATE_INTERVAL: Long = 60000 * 10 // Every 10 minutes.
-        private const val FASTEST_UPDATE_INTERVAL: Long = 60000 * 5 // Every 5 minutes.
+        private const val UPDATE_INTERVAL: Long = 10 * 60000L // Every 10 minutes.
+        private const val FASTEST_UPDATE_INTERVAL: Long = 6 * 50000L // Every 5 minutes.
         private const val MAX_WAIT_TIME = UPDATE_INTERVAL + FASTEST_UPDATE_INTERVAL // Every 15 minutes.
     }
 }

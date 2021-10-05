@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name"> DriversApp</string>
     <string name="version"> Версия</string>
-    <string name="numV" translatable="false"> 1.4.0 - beta</string>
+    <string name="numV" translatable="false"> 1.0.0 - release</string>
     <string name="goToMapReadOnly">Просмотр маршрута</string>
     <string name="inPut">Войти</string>
+    <string name="writePut" translatable="false">Ввести</string>
     <string name="loginWindow">
         Здравствуйте.  \n
         Для начала работы нажмите на кнопку и наведите камеру на штрих-код.
@@ -29,6 +30,9 @@
     <string name="notation">* - для того чтобы позвонить клиенту, нажмите на его номер телефона</string>
     <string name="goToMap">В путь</string>
 
+    <string name="handWriteAnnotation" translatable="false">Ввести штрих-код вручную</string>
+    <string name="handAnnotation" translatable="false">Введите штрих-код в поле ниже</string>
+    <string name="exampleBarcode" translatable="false">2315615179358</string>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////////-->
 

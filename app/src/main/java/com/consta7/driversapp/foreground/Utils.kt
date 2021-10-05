@@ -1,10 +1,10 @@
-package com.consta7.driversapp
+package com.consta7.driversapp.foreground
 
 import android.content.Context
 import android.location.Location
 import android.preference.PreferenceManager.getDefaultSharedPreferences
-import com.consta7.driversapp.presenter.ListPresenter
-import com.consta7.driversapp.view.ListViewImp
+import com.consta7.driversapp.R
+import com.consta7.driversapp.model.JsonFileConstructorImp
 import java.text.DateFormat
 import java.util.*
 
@@ -12,8 +12,7 @@ internal object Utils {
 
     private const val KEY_LOCATION_UPDATES_REQUESTED = "location-updates-requested"
     private const val KEY_LOCATION_UPDATES_RESULT = "location-update-result"
-    private val list : ListPresenter = ListPresenter()
-    private val viewList : ListViewImp = ListViewImp()
+    private val construct : JsonFileConstructorImp = JsonFileConstructorImp()
 
     fun setRequestingLocationUpdates(context: Context?, value: Boolean) {
         getDefaultSharedPreferences(context)
@@ -42,20 +41,20 @@ internal object Utils {
             sb.append(")")
             sb.append("\n")
 
-           setValues(location.latitude, location.longitude)
+            setValues(location.latitude, location.longitude)
         }
         return sb.toString()
     }
 
     private fun setValues(lat : Double, lon : Double) {
         //add coordinates for send logFile in finish
-        list.addLogInfo("${lat};${lon}")
+        construct.addLogInfo("${lat};${lon}")
         //set coordinates for send file
-        list.setLat(lat)
-        list.setLon(lon)
+        construct.setLat(lat)
+        construct.setLon(lon)
         //set coordinates for send file 5-minutes interval
-        viewList.setGeoLat(lat)
-        viewList.setGeoLon(lon)
+        construct.setGeoLat(lat)
+        construct.setGeoLon(lon)
     }
 
     fun setLocationUpdatesResult(context: Context, locations: List<Location>) {

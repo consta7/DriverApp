@@ -1,32 +1,17 @@
 package com.consta7.driversapp.presenter.interfaces
 
-import android.app.PendingIntent
 import android.content.Context
-import android.view.LayoutInflater
-import android.widget.TableLayout
-import org.json.JSONArray
-import java.io.File
+import android.os.Handler
+import android.os.Looper
 
 interface ListAbstract {
+    val handler : Handler
+        get() = Handler(Looper.getMainLooper())
 
-    fun successResult(code: Int, barcode : String)
+    fun successResult(code: Int, barcode : String, context: Context)
     fun successParse(code: Int)
     fun progressBarVisible(code: Int)
     fun informationVisible(code : Int)
-    fun jsonParser(jsonArray: JSONArray?)
-    fun showTable(context: Context, table : TableLayout, lay: LayoutInflater)
-    fun showCard(context: Context, needLine : Int, lay: LayoutInflater)
-    fun selectedDoneClient(context: Context, flag : Int, index: Int)
     fun successWrite(fileName : String)
-    fun pushNotify(context: Context, pendingIntent : PendingIntent)
-    //fun createJsonFile(lat : Double, lon : Double)
-    fun createJsonFile()
 
-    fun setLat(lat : Double)
-    fun setLon(lon : Double)
-
-    //get coordinates for next usage in openStreet maps
-    fun getLat() : Array<Double>
-    fun getLon() : Array<Double>
-    fun getReport() : String
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.consta7.driversapp.Global
@@ -32,12 +33,58 @@ class LoginViewImp : Global(), LoginView {
         } catch (e : Exception) {
             Toast.makeText(this, "Permission not access", Toast.LENGTH_SHORT).show()
         }
-        
 
+        handWrite.setOnClickListener {
+            handWriteVisibility()
+        }
+        btnBack.setOnClickListener {
+            loginVisibility()
+        }
+        btnWrite.setOnClickListener {
+            if (editBarcode.text.toString().trim().length < 13) {
+                Toast.makeText(this, "Введите штрих-код полностью!", Toast.LENGTH_LONG)
+                    .show()
+                return@setOnClickListener
+            }
+            barcode = editBarcode.text.toString().trim()
+            val newMode = Intent(this, ListViewImp::class.java)
+            startActivity(newMode)
+            finish()
+        }
         btnScan.setOnClickListener {
-            val scanAct = Intent(this@LoginViewImp, ScanActivity::class.java)
+            val scanAct = Intent(this, ScanActivity::class.java)
             scanAct.putExtra("ParentForm","MainActivity")
             startActivity(scanAct)
+        }
+
+        loginVisibility()
+    }
+
+    override fun loginVisibility() {
+        View.GONE.also {
+            btnBack.visibility = it
+            btnWrite.visibility = it
+            editBarcode.visibility = it
+            annotation.visibility = it
+        }
+        View.VISIBLE.also {
+            btnScan.visibility = it
+            hell.visibility = it
+            handWrite.visibility = it
+        }
+    }
+
+    override fun handWriteVisibility() {
+        View.GONE.also {
+            btnScan.visibility = it
+            hell.visibility = it
+            handWrite.visibility = it
+        }
+        View.VISIBLE.also {
+            btnBack.visibility = it
+            btnWrite.visibility = it
+            editBarcode.visibility = it
+            annotation.visibility = it
         }
     }
 
@@ -57,7 +104,7 @@ class LoginViewImp : Global(), LoginView {
         Log.d(tag, "onResume")
         if(barcode != null){
             try {
-               reactionBarcode(barcode!!)
+                reactionBarcode(barcode!!)
             }
             catch (e: Exception){
                 val toast = Toast.makeText(
@@ -71,6 +118,10 @@ class LoginViewImp : Global(), LoginView {
         super.onPause()
         releaseScanner()
         Log.d(tag, "onPause")
+    }
+
+    override fun onBackPressed() {
+        loginVisibility()
     }
 
 }

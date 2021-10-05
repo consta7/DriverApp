@@ -2,11 +2,12 @@ package com.consta7.driversapp.presenter
 
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.consta7.driversapp.model.JsonParseImp
 import com.consta7.driversapp.presenter.interfaces.Route
 
 class RoutePresenter : Route {
 
-    private val listPres : ListPresenter = ListPresenter()
+    private val json : JsonParseImp = JsonParseImp()
     private var lat : Array<Double> = arrayOf()
     private var lon : Array<Double> = arrayOf()
     private var fstCor : Double = 0.0
@@ -15,13 +16,13 @@ class RoutePresenter : Route {
 
     override fun getValues() {
         //get count points
-        count = listPres.getCount()
+        count = json.getParseNumber("countClients").toInt()
         //get start point
-        fstCor = listPres.getLat()[0]
-        sndCor = listPres.getLon()[0]
+        fstCor = json.getParseNumber("startLat").toDouble()
+        sndCor = json.getParseNumber("startLon").toDouble()
         //get clients coordinates
-        lat = listPres.getLat()
-        lon = listPres.getLon()
+        lat = json.getCoordinatesArray(0)
+        lon = json.getCoordinatesArray(1)
     }
 
     override val site: String
